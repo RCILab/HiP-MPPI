@@ -274,19 +274,26 @@
     .copy-card h3 { margin: 0 0 10px; font-size: 23px; letter-spacing: -.02em; }
     .copy-card p { color: #63768c; margin: 0; }
 
-    #method .method-figure .image-shell {
-      padding: 10px;
-      border-radius: 28px;
-      background: linear-gradient(135deg, rgba(100,216,255,.36), rgba(123,140,255,.10) 50%, rgba(255,255,255,.32));
+    .paper-figure-shell {
+      padding: 16px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, rgba(100,216,255,.32), rgba(123,140,255,.08) 50%, rgba(255,255,255,.55));
     }
-    #method .method-figure .image-shell img {
+    .paper-figure-shell img {
       width: 100%;
       height: auto;
       aspect-ratio: auto;
       object-fit: contain;
       background: #fff;
       display: block;
-      border-radius: 18px;
+      border-radius: 12px;
+    }
+    #method .method-figure .paper-figure-shell {
+      padding: 22px;
+      border-radius: 32px;
+    }
+    #method .method-figure .paper-figure-shell img {
+      border-radius: 10px;
     }
 
     .algorithm-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 26px; }
@@ -388,6 +395,25 @@
 
     /* Research result / appendix tables */
     .table-block { margin-top: 26px; }
+    @media (min-width: 1200px) {
+      .racetrack-table-block {
+        width: min(1500px, calc(100vw - 56px));
+        margin-left: 50%;
+        transform: translateX(-50%);
+      }
+      .racetrack-table-block .table-scroll {
+        overflow-x: visible;
+      }
+      .racetrack-table-block .research-table {
+        min-width: 0;
+        width: 100%;
+        font-size: 10.6px;
+      }
+      .racetrack-table-block .research-table th,
+      .racetrack-table-block .research-table td {
+        padding: 9px 6px;
+      }
+    }
     .table-heading {
       display: flex;
       justify-content: space-between;
@@ -675,7 +701,7 @@
             </div>
           </div>
           <figure style="margin:0">
-            <div class="image-shell">
+            <div class="image-shell paper-figure-shell">
               <img src="static/images/fig1.png" alt="Figure 1: cluster-wise hierarchical shared-set concept" loading="lazy" />
             </div>
             <figcaption class="figure-caption">Fig. 1 — Cluster-wise hierarchical shared-set concept.</figcaption>
@@ -694,7 +720,7 @@
         </div>
 
         <figure class="method-figure" style="margin:0 0 26px">
-          <div class="image-shell">
+          <div class="image-shell paper-figure-shell">
             <img src="static/images/fig2.png" alt="Figure 2: overall HiP-MPPI procedure" loading="lazy" />
           </div>
           <figcaption class="figure-caption">Fig. 2 — Overall procedure of HiP-MPPI.</figcaption>
@@ -794,7 +820,7 @@
             <div class="highlight">100% @ K=100 / K=30</div>
           </div>
 
-          <div class="table-block">
+          <div class="table-block racetrack-table-block">
             <div class="table-heading">
               <div><h4>Racetrack quantitative comparison</h4></div>
               <p>Table II · 20 trials × 3 laps</p>
@@ -837,7 +863,7 @@
                 </tbody>
               </table>
             </div>
-            <p class="table-note">Full paper table reproduced here for the project page. On narrow screens, swipe horizontally to inspect all metrics.</p>
+            <p class="table-note">Full paper table reproduced here for the project page. It expands on wide screens; on narrow screens, swipe horizontally to inspect all metrics.</p>
           </div>
         </div>
 
