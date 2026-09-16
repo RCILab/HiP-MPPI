@@ -17,10 +17,13 @@
     Paper   -> static/pdfs/paper.pdf
 
     Required image files:
-      fig1.png, fig2.png, fig5.png
+      fig1.png, fig2.png, fig5a.png, fig5b.png, fig5c.png
     Required video files:
       teaser.mp4
-      racetrack_baseline_failure.mp4
+      racetrack_mppi_failure.mp4
+      racetrack_shield_mppi_failure.mp4
+      racetrack_csc_mppi_failure.mp4
+      racetrack_qp_mppi_failure.mp4
       racetrack_hip_mppi_success.mp4
       tabletop_mobile_manipulator.mp4
       real_robot_tilt_high.mp4
@@ -129,11 +132,11 @@
     }
     .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--good); box-shadow: 0 0 14px var(--good); }
     h1 {
-      max-width: 1040px;
+      max-width: 1120px;
       margin: 22px auto 18px;
-      font-size: clamp(42px, 6.2vw, 76px);
-      line-height: 1.04;
-      letter-spacing: -.052em;
+      font-size: clamp(40px, 4.2vw, 54px);
+      line-height: 1.08;
+      letter-spacing: -.045em;
       font-weight: 850;
     }
     .gradient-text {
@@ -142,7 +145,7 @@
       background-clip: text;
       color: transparent;
     }
-    .title-line { display: block; }
+    .title-line { display: block; white-space: nowrap; }
     .subtitle {
       max-width: 820px;
       margin: 0 auto;
@@ -298,6 +301,22 @@
     }
 
     .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .comparison-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 28px 0 12px;
+    }
+    .comparison-heading h4 { margin: 0; font-size: 16px; letter-spacing: -.015em; }
+    .comparison-heading span { color: #7a8ca0; font-size: 12px; }
+    .racetrack-video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .racetrack-video-grid .our-method-card { grid-column: 1 / -1; }
+    .our-method-card {
+      border-color: rgba(47,165,125,.24);
+      background: linear-gradient(145deg, rgba(255,255,255,.96), rgba(237,250,246,.9));
+    }
+    .our-method-card .media-info { border-top: 1px solid rgba(47,165,125,.10); }
     .media-card {
       overflow: hidden;
       border-radius: 22px;
@@ -464,6 +483,20 @@
     .full-figure { margin-top: 22px; }
     .full-figure .image-shell img { aspect-ratio: auto; object-fit: contain; background: #fff; }
 
+    .subfigure-stack { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 22px; }
+    .subfigure-card {
+      padding: 14px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.82);
+      box-shadow: 0 12px 28px rgba(46,75,112,.07);
+    }
+    .subfigure-card .image-shell img { aspect-ratio: auto; object-fit: contain; background: #fff; }
+    .subfigure-meta { padding: 10px 4px 2px; }
+    .subfigure-label { color: #167baa; font-size: 12px; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
+    .subfigure-title { margin: 4px 0 4px; font-size: 16px; color: #172235; font-weight: 780; }
+    .subfigure-text { margin: 0; color: #6f8297; font-size: 13px; }
+
     .priority-badge { color: #5f7389; font-size: 12px; margin-bottom: 7px; }
     .priority-badge b { color: #172235; }
 
@@ -499,6 +532,7 @@
     .reveal.visible { opacity: 1; transform: none; }
 
     @media (max-width: 900px) {
+      .title-line { white-space: normal; }
       .nav-links { display: none; }
       .hero { padding-top: 76px; }
       .two-col, .tabletop-layout { grid-template-columns: 1fr; }
@@ -511,7 +545,8 @@
       .hero { padding-bottom: 36px; }
       .teaser-wrap { padding-bottom: 70px; }
       section.content-section { padding: 70px 0; }
-      .video-grid, .algorithm-grid { grid-template-columns: 1fr; }
+      .video-grid, .racetrack-video-grid, .algorithm-grid { grid-template-columns: 1fr; }
+      .racetrack-video-grid .our-method-card { grid-column: auto; }
       .experiment-title-row { align-items: flex-start; flex-direction: column; }
       .result-strip, .takeaway { grid-template-columns: 1fr; }
       .abstract-card p { text-align: left; font-size: 16px; }
@@ -670,23 +705,59 @@
             <span>P1 · Control-input limits</span><span>P2 · Collision avoidance</span><span>P3 · 2 m/s speed</span><span>P4 · Centerline band</span>
           </div>
 
-          <div class="video-grid">
+          <div class="comparison-heading">
+            <h4>Baseline failure examples</h4>
+            <span>MPPI · Shield-MPPI · CSC-MPPI · QP-MPPI</span>
+          </div>
+
+          <div class="racetrack-video-grid">
             <article class="media-card">
               <video controls muted loop playsinline preload="metadata">
-                <source src="static/videos/racetrack_baseline_failure.mp4" type="video/mp4" />
+                <source src="static/videos/racetrack_mppi_failure.mp4" type="video/mp4" />
               </video>
               <div class="media-info">
-                <div class="media-label"><span class="status fail"></span>Baseline · failure case</div>
-                <p>Place your representative baseline failure video here.</p>
+                <div class="media-label"><span class="status fail"></span>MPPI · failure example</div>
+                <p>Representative racetrack failure case for standard MPPI.</p>
               </div>
             </article>
+
             <article class="media-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="static/videos/racetrack_shield_mppi_failure.mp4" type="video/mp4" />
+              </video>
+              <div class="media-info">
+                <div class="media-label"><span class="status fail"></span>Shield-MPPI · failure example</div>
+                <p>Representative racetrack failure case for Shield-MPPI.</p>
+              </div>
+            </article>
+
+            <article class="media-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="static/videos/racetrack_csc_mppi_failure.mp4" type="video/mp4" />
+              </video>
+              <div class="media-info">
+                <div class="media-label"><span class="status fail"></span>CSC-MPPI · failure example</div>
+                <p>Representative racetrack failure case for CSC-MPPI.</p>
+              </div>
+            </article>
+
+            <article class="media-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="static/videos/racetrack_qp_mppi_failure.mp4" type="video/mp4" />
+              </video>
+              <div class="media-info">
+                <div class="media-label"><span class="status fail"></span>QP-MPPI · failure example</div>
+                <p>Representative racetrack failure case for QP-MPPI.</p>
+              </div>
+            </article>
+
+            <article class="media-card our-method-card">
               <video controls muted loop playsinline preload="metadata">
                 <source src="static/videos/racetrack_hip_mppi_success.mp4" type="video/mp4" />
               </video>
               <div class="media-info">
                 <div class="media-label"><span class="status success"></span>HiP-MPPI · success</div>
-                <p>HiP-MPPI relaxes lower-priority constraints when needed while preserving higher-priority decisions.</p>
+                <p>Our method resolves the conflict according to the prescribed hierarchy and completes the racetrack task.</p>
               </div>
             </article>
           </div>
@@ -781,10 +852,41 @@
           </div>
 
           <figure class="full-figure" style="margin-bottom:0">
-            <div class="image-shell">
-              <img src="static/images/fig5.png" alt="Figure 5: tabletop experiment quantitative result graphs" loading="lazy" />
+            <div class="subfigure-stack">
+              <article class="subfigure-card">
+                <div class="image-shell">
+                  <img src="static/images/fig5a.png" alt="Figure 5a: joint 2 angle and joint-limit bound" loading="lazy" />
+                </div>
+                <div class="subfigure-meta">
+                  <div class="subfigure-label">(a)</div>
+                  <div class="subfigure-title">Joint 2 angle and joint-limit bound</div>
+                  <p class="subfigure-text">Place the first tabletop quantitative plot at <b>static/images/fig5a.png</b>.</p>
+                </div>
+              </article>
+
+              <article class="subfigure-card">
+                <div class="image-shell">
+                  <img src="static/images/fig5b.png" alt="Figure 5b: clearance to dynamic and static obstacles" loading="lazy" />
+                </div>
+                <div class="subfigure-meta">
+                  <div class="subfigure-label">(b)</div>
+                  <div class="subfigure-title">Clearance to dynamic and static obstacles</div>
+                  <p class="subfigure-text">Place the second tabletop quantitative plot at <b>static/images/fig5b.png</b>.</p>
+                </div>
+              </article>
+
+              <article class="subfigure-card">
+                <div class="image-shell">
+                  <img src="static/images/fig5c.png" alt="Figure 5c: normalized optimal slack of the P4 base-motion suppression constraint" loading="lazy" />
+                </div>
+                <div class="subfigure-meta">
+                  <div class="subfigure-label">(c)</div>
+                  <div class="subfigure-title">Normalized optimal slack of the P4 base-motion suppression constraint</div>
+                  <p class="subfigure-text">Place the third tabletop quantitative plot at <b>static/images/fig5c.png</b>.</p>
+                </div>
+              </article>
             </div>
-            <figcaption class="figure-caption">Fig. 5 — Joint-limit angle, obstacle clearances, and normalized P4 slack. Put the original result graph at <b>static/images/fig5.png</b>.</figcaption>
+            <figcaption class="figure-caption">Fig. 5 — Experimental results for the tabletop object-reaching task: (a) joint 2 angle and the corresponding joint-limit bound, (b) clearance to the dynamic and static obstacles during task execution, and (c) normalized optimal slack of the P4 base-motion suppression constraint.</figcaption>
           </figure>
         </div>
 
