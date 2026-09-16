@@ -1,520 +1,942 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <!-- Primary Meta Tags -->
-  <!-- TODO: Replace with your paper title and author names -->
-  <meta name="title" content="PAPER_TITLE - AUTHOR_NAMES">
-  <!-- TODO: Write a compelling 150-160 character description of your research -->
-  <meta name="description" content="BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS">
-  <!-- TODO: Add 5-10 relevant keywords for your research area -->
-  <meta name="keywords" content="KEYWORD1, KEYWORD2, KEYWORD3, machine learning, computer vision, AI">
-  <!-- TODO: List all authors -->
-  <meta name="author" content="FIRST_AUTHOR_NAME, SECOND_AUTHOR_NAME">
-  <meta name="robots" content="index, follow">
-  <meta name="language" content="English">
-  
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="article">
-  <!-- TODO: Replace with your institution or lab name -->
-  <meta property="og:site_name" content="INSTITUTION_OR_LAB_NAME">
-  <!-- TODO: Same as paper title above -->
-  <meta property="og:title" content="PAPER_TITLE">
-  <!-- TODO: Same as description above -->
-  <meta property="og:description" content="BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS">
-  <!-- TODO: Replace with your actual website URL -->
-  <meta property="og:url" content="https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE">
-  <!-- TODO: Create a 1200x630px preview image and update path -->
-  <meta property="og:image" content="https://YOUR_DOMAIN.com/static/images/social_preview.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="PAPER_TITLE - Research Preview">
-  <meta property="article:published_time" content="2024-01-01T00:00:00.000Z">
-  <meta property="article:author" content="FIRST_AUTHOR_NAME">
-  <meta property="article:section" content="Research">
-  <meta property="article:tag" content="KEYWORD1">
-  <meta property="article:tag" content="KEYWORD2">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f6f9fd" />
+  <meta name="description" content="HiP-MPPI: Hierarchical Projection for Prioritized Constraint Handling in Model Predictive Path Integral Control." />
+  <meta property="og:title" content="HiP-MPPI" />
+  <meta property="og:description" content="Hierarchical Projection for Prioritized Constraint Handling in Model Predictive Path Integral Control." />
+  <meta property="og:image" content="static/images/social_preview.png" />
+  <title>HiP-MPPI | Project Page</title>
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <!-- TODO: Replace with your lab/institution Twitter handle -->
-  <meta name="twitter:site" content="@YOUR_TWITTER_HANDLE">
-  <!-- TODO: Replace with first author's Twitter handle -->
-  <meta name="twitter:creator" content="@AUTHOR_TWITTER_HANDLE">
-  <!-- TODO: Same as paper title above -->
-  <meta name="twitter:title" content="PAPER_TITLE">
-  <!-- TODO: Same as description above -->
-  <meta name="twitter:description" content="BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS">
-  <!-- TODO: Same as social preview image above -->
-  <meta name="twitter:image" content="https://YOUR_DOMAIN.com/static/images/social_preview.png">
-  <meta name="twitter:image:alt" content="PAPER_TITLE - Research Preview">
+  <!--
+    ASSET CONVENTION
+    Images  -> static/images/
+    Videos  -> static/videos/
+    Paper   -> static/pdfs/paper.pdf
 
-  <!-- Academic/Research Specific -->
-  <meta name="citation_title" content="PAPER_TITLE">
-  <meta name="citation_author" content="FIRST_AUTHOR_LAST, FIRST_AUTHOR_FIRST">
-  <meta name="citation_author" content="SECOND_AUTHOR_LAST, SECOND_AUTHOR_FIRST">
-  <meta name="citation_publication_date" content="2024">
-  <meta name="citation_conference_title" content="CONFERENCE_NAME">
-  <meta name="citation_pdf_url" content="https://YOUR_DOMAIN.com/static/pdfs/paper.pdf">
-  
-  <!-- Additional SEO -->
-  <meta name="theme-color" content="#2563eb">
-  <meta name="msapplication-TileColor" content="#2563eb">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  
-  <!-- Preconnect for performance -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://ajax.googleapis.com">
-  <link rel="preconnect" href="https://documentcloud.adobe.com">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    Required image files:
+      fig1.png, fig2.png, fig5.png
+    Required video files:
+      teaser.mp4
+      racetrack_baseline_failure.mp4
+      racetrack_hip_mppi_success.mp4
+      tabletop_mobile_manipulator.mp4
+      real_robot_tilt_high.mp4
+      real_robot_height_high.mp4
+  -->
+
+  <style>
+    :root {
+      --bg: #f6f9fd;
+      --bg-2: #eef4fa;
+      --panel: rgba(255, 255, 255, .84);
+      --panel-solid: #ffffff;
+      --line: rgba(40, 73, 112, .13);
+      --text: #172235;
+      --muted: #687a90;
+      --accent: #168fca;
+      --accent-2: #6170df;
+      --good: #2fa57d;
+      --danger: #dd6576;
+      --max: 1120px;
+      --radius: 24px;
+      --shadow: 0 20px 60px rgba(46, 75, 112, .13);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(900px 520px at 78% -6%, rgba(93, 118, 235, .13), transparent 66%),
+        radial-gradient(720px 480px at 8% 12%, rgba(36, 170, 220, .10), transparent 68%),
+        linear-gradient(180deg, #fbfdff 0%, #f6f9fd 36%, #f1f6fb 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img, video { display: block; width: 100%; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    .page-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(34,74,112,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34,74,112,.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.5), transparent 75%);
+    }
+
+    .container { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(40,73,112,.10);
+      background: rgba(250, 252, 255, .84);
+      backdrop-filter: blur(18px);
+    }
+    .nav-inner {
+      min-height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+    .brand-mark {
+      width: 31px; height: 31px; border-radius: 10px;
+      display: grid; place-items: center;
+      color: #06101e;
+      background: linear-gradient(135deg, var(--accent), #b4f1ff 48%, var(--accent-2));
+      box-shadow: 0 0 24px rgba(100,216,255,.25);
+      font-size: 14px;
+    }
+    .nav-links { display: flex; align-items: center; gap: 20px; color: #66798f; font-size: 14px; }
+    .nav-links a { transition: .2s ease; }
+    .nav-links a:hover { color: #172235; }
+
+    .hero { padding: 94px 0 50px; text-align: center; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(100,216,255,.22);
+      background: rgba(100,216,255,.07);
+      color: #176f98;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--good); box-shadow: 0 0 14px var(--good); }
+    h1 {
+      max-width: 1040px;
+      margin: 22px auto 18px;
+      font-size: clamp(42px, 6.2vw, 76px);
+      line-height: 1.04;
+      letter-spacing: -.052em;
+      font-weight: 850;
+    }
+    .gradient-text {
+      background: linear-gradient(120deg, #172235 10%, #197aa7 46%, #5e68c7 92%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .title-line { display: block; }
+    .subtitle {
+      max-width: 820px;
+      margin: 0 auto;
+      color: #66778b;
+      font-size: clamp(17px, 2.2vw, 22px);
+      line-height: 1.55;
+    }
+    .authors { margin-top: 24px; color: #42546a; font-size: 15px; }
+    .authors span { color: #8796a8; }
+    .hero-actions { margin-top: 28px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 44px;
+      padding: 0 17px;
+      border-radius: 999px;
+      border: 1px solid rgba(40,73,112,.13);
+      background: rgba(255,255,255,.78);
+      color: #26364b;
+      font-weight: 720;
+      font-size: 14px;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); background: #ffffff; border-color: rgba(40,73,112,.22); }
+    .btn.primary { color: #06101e; border: 0; background: linear-gradient(135deg, #8ae8ff, #aeb6ff); }
+    .btn.coming-soon {
+      cursor: default;
+      color: #708095;
+      background: rgba(248,250,253,.9);
+      border-style: dashed;
+    }
+    .btn.coming-soon:hover { transform: none; background: rgba(248,250,253,.9); }
+
+    .teaser-wrap { padding: 22px 0 92px; }
+    .video-shell, .image-shell {
+      position: relative;
+      border-radius: var(--radius);
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(100,216,255,.45), rgba(123,140,255,.12) 50%, rgba(255,255,255,.10));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .video-shell::before, .image-shell::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background: radial-gradient(circle at 50% 0%, rgba(100,216,255,.08), transparent 45%);
+      pointer-events: none;
+    }
+    .video-shell video, .image-shell img {
+      position: relative;
+      z-index: 1;
+      border-radius: calc(var(--radius) - 1px);
+      background: #030811;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+    .teaser-caption {
+      max-width: 840px;
+      margin: 20px auto 0;
+      color: #718399;
+      font-size: 15px;
+    }
+
+    section.content-section { padding: 90px 0; }
+    section.alt {
+      border-top: 1px solid rgba(40,73,112,.07);
+      border-bottom: 1px solid rgba(40,73,112,.07);
+      background: linear-gradient(180deg, rgba(255,255,255,.48), rgba(235,243,250,.46));
+    }
+    .section-head { margin-bottom: 36px; }
+    .kicker { color: var(--accent); font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: .12em; }
+    h2 { margin: 7px 0 10px; font-size: clamp(30px, 4vw, 46px); line-height: 1.12; letter-spacing: -.035em; }
+    .section-lead { max-width: 760px; margin: 0; color: var(--muted); font-size: 17px; }
+
+    .abstract-card {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(28px, 5vw, 52px);
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(255,255,255,.96), rgba(241,247,252,.90));
+      box-shadow: 0 22px 60px rgba(46,75,112,.10);
+    }
+    .abstract-card::after {
+      content: "";
+      position: absolute;
+      width: 340px; height: 340px; border-radius: 50%;
+      right: -160px; top: -160px;
+      background: rgba(100,216,255,.06);
+      filter: blur(2px);
+    }
+    .abstract-card p { position: relative; z-index: 1; margin: 0; color: #506276; font-size: 17px; text-align: justify; }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px; }
+    .stat {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255,255,255,.76);
+    }
+    .stat strong { display: block; color: #172235; font-size: 28px; letter-spacing: -.03em; }
+    .stat span { color: #718399; font-size: 13px; }
+
+    .two-col { display: grid; grid-template-columns: 1.02fr .98fr; gap: 34px; align-items: center; }
+    .copy-card {
+      padding: 28px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.72);
+    }
+    .copy-card h3 { margin: 0 0 10px; font-size: 23px; letter-spacing: -.02em; }
+    .copy-card p { color: #63768c; margin: 0; }
+
+    .algorithm-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 26px; }
+    .step {
+      position: relative;
+      min-height: 168px;
+      padding: 20px 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,.80);
+    }
+    .step-num {
+      width: 32px; height: 32px; border-radius: 10px;
+      display: grid; place-items: center;
+      margin-bottom: 17px;
+      background: rgba(100,216,255,.10);
+      color: #1677a5;
+      font-size: 13px; font-weight: 850;
+      border: 1px solid rgba(100,216,255,.15);
+    }
+    .step h4 { margin: 0 0 7px; font-size: 15px; }
+    .step p { margin: 0; color: #6d8095; font-size: 13px; line-height: 1.5; }
+
+    .figure-caption { margin-top: 12px; color: #74869a; font-size: 13px; text-align: center; }
+
+    .experiment-block + .experiment-block { margin-top: 88px; }
+    .experiment-title-row { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 22px; }
+    .experiment-title-row h3 { margin: 0; font-size: 28px; letter-spacing: -.03em; }
+    .experiment-title-row p { margin: 8px 0 0; max-width: 720px; color: #6d8095; }
+    .pill {
+      white-space: nowrap;
+      padding: 8px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(114,224,180,.18);
+      background: rgba(114,224,180,.07);
+      color: #247b61;
+      font-weight: 750;
+      font-size: 12px;
+    }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .media-card {
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.82);
+      box-shadow: 0 16px 40px rgba(46,75,112,.09);
+    }
+    .media-card video { aspect-ratio: 16 / 9; object-fit: cover; background: #030811; }
+    .media-card .media-info { padding: 18px 20px 20px; }
+    .media-label { display: flex; align-items: center; gap: 8px; font-weight: 800; margin-bottom: 5px; }
+    .status { width: 8px; height: 8px; border-radius: 50%; }
+    .status.fail { background: var(--danger); box-shadow: 0 0 12px rgba(255,140,155,.45); }
+    .status.success { background: var(--good); box-shadow: 0 0 12px rgba(114,224,180,.45); }
+    .media-info p { margin: 0; color: #6d8095; font-size: 13px; }
+
+    .constraint-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 24px; }
+    .constraint-row span {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(40,73,112,.11);
+      background: rgba(255,255,255,.66);
+      color: #60758b;
+      font-size: 12px;
+    }
+
+    .result-strip {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: rgba(100,216,255,.055);
+      border: 1px solid rgba(100,216,255,.13);
+      color: #5c7187;
+    }
+    .result-strip strong { color: #172235; }
+    .result-strip .highlight { color: #167bac; font-weight: 850; white-space: nowrap; }
 
 
-  <!-- TODO: Replace with your paper title and authors -->
-  <title>PAPER_TITLE - AUTHOR_NAMES | Academic Research</title>
-  
-  <!-- Favicon and App Icons -->
-  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
-  <link rel="apple-touch-icon" href="static/images/favicon.ico">
-  
-  <!-- Critical CSS - Load synchronously -->
-  <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
-  
-  <!-- Non-critical CSS - Load asynchronously -->
-  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  
-  <!-- Fallback for browsers that don't support preload -->
-  <noscript>
-    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
-    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
-    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  </noscript>
-  
-  <!-- Fonts - Optimized loading -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- Defer non-critical JavaScript -->
-  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
-  <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script defer src="static/js/bulma-carousel.min.js"></script>
-  <script defer src="static/js/bulma-slider.min.js"></script>
-  <script defer src="static/js/index.js"></script>
-  
-  <!-- Structured Data for Academic Papers -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ScholarlyArticle",
-    "headline": "PAPER_TITLE",
-    "description": "BRIEF_DESCRIPTION_OF_YOUR_RESEARCH_CONTRIBUTION_AND_FINDINGS",
-    "author": [
-      {
-        "@type": "Person",
-        "name": "FIRST_AUTHOR_NAME",
-        "affiliation": {
-          "@type": "Organization",
-          "name": "INSTITUTION_NAME"
-        }
-      },
-      {
-        "@type": "Person",
-        "name": "SECOND_AUTHOR_NAME",
-        "affiliation": {
-          "@type": "Organization",
-          "name": "INSTITUTION_NAME"
-        }
-      }
-    ],
-    "datePublished": "2024-01-01",
-    "publisher": {
-      "@type": "Organization",
-      "name": "CONFERENCE_OR_JOURNAL_NAME"
-    },
-    "url": "https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE",
-    "image": "https://YOUR_DOMAIN.com/static/images/social_preview.png",
-    "keywords": ["KEYWORD1", "KEYWORD2", "KEYWORD3", "machine learning", "computer vision"],
-    "abstract": "FULL_ABSTRACT_TEXT_HERE",
-    "citation": "BIBTEX_CITATION_HERE",
-    "isAccessibleForFree": true,
-    "license": "https://creativecommons.org/licenses/by/4.0/",
-    "mainEntity": {
-      "@type": "WebPage",
-      "@id": "https://YOUR_DOMAIN.com/YOUR_PROJECT_PAGE"
-    },
-    "about": [
-      {
-        "@type": "Thing",
-        "name": "RESEARCH_AREA_1"
-      },
-      {
-        "@type": "Thing", 
-        "name": "RESEARCH_AREA_2"
-      }
-    ]
-  }
-  </script>
-  
-  <!-- Website/Organization Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "INSTITUTION_OR_LAB_NAME",
-    "url": "https://YOUR_INSTITUTION_WEBSITE.com",
-    "logo": "https://YOUR_DOMAIN.com/static/images/favicon.ico",
-    "sameAs": [
-      "https://twitter.com/YOUR_TWITTER_HANDLE",
-      "https://github.com/YOUR_GITHUB_USERNAME"
-    ]
-  }
-  </script>
+
+    /* Research result / appendix tables */
+    .table-block { margin-top: 26px; }
+    .table-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin-bottom: 12px;
+    }
+    .table-heading h4 { margin: 0; font-size: 17px; letter-spacing: -.01em; }
+    .table-heading p { margin: 0; color: #708399; font-size: 12px; }
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255,255,255,.88);
+      box-shadow: 0 14px 36px rgba(46,75,112,.08);
+      scrollbar-width: thin;
+    }
+    .research-table, .parameter-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      line-height: 1.35;
+      color: #556a80;
+    }
+    .research-table { min-width: 1220px; }
+    .research-table th, .research-table td,
+    .parameter-table th, .parameter-table td {
+      padding: 10px 10px;
+      border-bottom: 1px solid rgba(40,73,112,.08);
+      border-right: 1px solid rgba(40,73,112,.05);
+      text-align: center;
+      white-space: nowrap;
+    }
+    .research-table thead th, .parameter-table thead th {
+      background: rgba(100,216,255,.055);
+      color: #2a4864;
+      font-weight: 800;
+    }
+    .research-table thead tr:first-child th { color: #167baa; font-size: 10.5px; letter-spacing: .02em; }
+    .research-table td:first-child, .research-table th:first-child,
+    .parameter-table td:first-child, .parameter-table th:first-child { text-align: left; }
+    .research-table tbody tr:last-child td,
+    .parameter-table tbody tr:last-child td { border-bottom: 0; }
+    .research-table .method-start td:first-child { font-weight: 800; color: #1d2b3d; }
+    .research-table .hip-row td { background: rgba(114,224,180,.055); }
+    .research-table .hip-row td:first-child { color: #247b61; }
+    .research-table .best { color: #247b61; font-weight: 850; }
+    .table-note {
+      margin: 11px 2px 0;
+      color: #76899e;
+      font-size: 11.5px;
+    }
+
+    .appendix-shell {
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: linear-gradient(145deg, rgba(255,255,255,.94), rgba(239,246,252,.86));
+      box-shadow: var(--shadow);
+    }
+    .appendix-intro {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 22px;
+      margin-bottom: 24px;
+    }
+    .appendix-intro h2 { margin-bottom: 6px; }
+    .appendix-intro p { margin: 0; max-width: 720px; color: #687c91; }
+    .parameter-grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
+    .parameter-card {
+      border: 1px solid rgba(40,73,112,.10);
+      border-radius: 20px;
+      overflow: hidden;
+      background: rgba(255,255,255,.68);
+    }
+    .parameter-card-header { padding: 17px 19px 13px; border-bottom: 1px solid rgba(40,73,112,.08); }
+    .parameter-card-header h3 { margin: 0 0 3px; font-size: 16px; }
+    .parameter-card-header p { margin: 0; color: #74889e; font-size: 12px; }
+    .parameter-table { min-width: 720px; font-size: 12px; }
+    .parameter-table td { height: 43px; }
+    .parameter-table td:nth-child(n+2) { min-width: 150px; }
+    .param-placeholder {
+      display: inline-flex;
+      min-width: 72px;
+      justify-content: center;
+      padding: 4px 8px;
+      border: 1px dashed rgba(100,216,255,.24);
+      border-radius: 7px;
+      color: #4d7d99;
+      background: rgba(100,216,255,.035);
+      font-size: 10px;
+      font-weight: 750;
+      letter-spacing: .04em;
+    }
+    .appendix-tip {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(123,140,255,.055);
+      color: #687c92;
+      font-size: 12px;
+    }
+
+    .tabletop-layout { display: grid; grid-template-columns: 1.12fr .88fr; gap: 20px; align-items: stretch; }
+    .tabletop-layout .media-card video { height: 100%; min-height: 420px; object-fit: cover; }
+    .side-notes { display: flex; flex-direction: column; gap: 14px; }
+    .note {
+      flex: 1;
+      padding: 22px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.76);
+    }
+    .note .time { color: var(--accent); font-size: 12px; font-weight: 850; letter-spacing: .07em; }
+    .note h4 { margin: 6px 0 8px; font-size: 17px; }
+    .note p { margin: 0; color: #6b8095; font-size: 13px; }
+
+    .full-figure { margin-top: 22px; }
+    .full-figure .image-shell img { aspect-ratio: auto; object-fit: contain; background: #fff; }
+
+    .priority-badge { color: #5f7389; font-size: 12px; margin-bottom: 7px; }
+    .priority-badge b { color: #172235; }
+
+    .takeaway {
+      margin-top: 28px;
+      padding: 28px;
+      border-radius: 22px;
+      border: 1px solid rgba(123,140,255,.18);
+      background: linear-gradient(135deg, rgba(123,140,255,.08), rgba(100,216,255,.045));
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+    .takeaway-icon {
+      width: 42px; height: 42px; display: grid; place-items: center;
+      border-radius: 14px;
+      color: #07111f; font-weight: 900;
+      background: linear-gradient(135deg, #8beaff, #b0b8ff);
+    }
+    .takeaway h3 { margin: 0 0 6px; font-size: 19px; }
+    .takeaway p { margin: 0; color: #63778d; }
+
+    footer {
+      padding: 50px 0 70px;
+      border-top: 1px solid rgba(40,73,112,.09);
+      color: #74879b;
+      font-size: 13px;
+    }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hero { padding-top: 76px; }
+      .two-col, .tabletop-layout { grid-template-columns: 1fr; }
+      .algorithm-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-grid { grid-template-columns: 1fr; }
+      .tabletop-layout .media-card video { min-height: 0; }
+    }
+    @media (max-width: 680px) {
+      .container { width: min(100% - 24px, var(--max)); }
+      .hero { padding-bottom: 36px; }
+      .teaser-wrap { padding-bottom: 70px; }
+      section.content-section { padding: 70px 0; }
+      .video-grid, .algorithm-grid { grid-template-columns: 1fr; }
+      .experiment-title-row { align-items: flex-start; flex-direction: column; }
+      .result-strip, .takeaway { grid-template-columns: 1fr; }
+      .abstract-card p { text-align: left; font-size: 16px; }
+      .nav-inner { min-height: 58px; }
+      h1 { font-size: 38px; line-height: 1.08; letter-spacing: -.045em; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
 </head>
 <body>
+  <div class="page-glow"></div>
 
-
-  <!-- Scroll to Top Button -->
-  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
-    <i class="fas fa-chevron-up"></i>
-  </button>
-
-  <!-- More Works Dropdown -->
-  <div class="more-works-container">
-    <button class="more-works-btn" onclick="toggleMoreWorks()" title="View More Works from Our Lab">
-      <i class="fas fa-flask"></i>
-      More Works
-      <i class="fas fa-chevron-down dropdown-arrow"></i>
-    </button>
-    <div class="more-works-dropdown" id="moreWorksDropdown">
-      <div class="dropdown-header">
-        <h4>More Works from Our Lab</h4>
-        <button class="close-btn" onclick="toggleMoreWorks()">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div class="works-list">
-        <!-- TODO: Replace with your lab's related works -->
-        <a href="https://arxiv.org/abs/PAPER_ID_1" class="work-item" target="_blank">
-          <div class="work-info">
-            <!-- TODO: Replace with actual paper title -->
-            <h5>Paper Title 1</h5>
-            <!-- TODO: Replace with brief description -->
-            <p>Brief description of the work and its main contribution.</p>
-            <!-- TODO: Replace with venue and year -->
-            <span class="work-venue">Conference/Journal 2024</span>
-          </div>
-          <i class="fas fa-external-link-alt"></i>
-        </a>
-        <!-- TODO: Add more related works or remove extra items -->
-        <a href="https://arxiv.org/abs/PAPER_ID_2" class="work-item" target="_blank">
-          <div class="work-info">
-            <h5>Paper Title 2</h5>
-            <p>Brief description of the work and its main contribution.</p>
-            <span class="work-venue">Conference/Journal 2023</span>
-          </div>
-          <i class="fas fa-external-link-alt"></i>
-        </a>
-        <a href="https://arxiv.org/abs/PAPER_ID_3" class="work-item" target="_blank">
-          <div class="work-info">
-            <h5>Paper Title 3</h5>
-            <p>Brief description of the work and its main contribution.</p>
-            <span class="work-venue">Conference/Journal 2023</span>
-          </div>
-          <i class="fas fa-external-link-alt"></i>
-        </a>
+  <nav>
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="HiP-MPPI home">
+        <span class="brand-mark">H</span>
+        <span>HiP-MPPI</span>
+      </a>
+      <div class="nav-links">
+        <a href="#abstract">Abstract</a>
+        <a href="#method">Method</a>
+        <a href="#experiments">Experiments</a>
+        <a href="#real-robot">Real Robot</a>
+        <a href="#appendix">Appendix</a>
+        <a href="static/pdfs/paper.pdf" target="_blank">Paper ↗</a>
       </div>
     </div>
-  </div>
+  </nav>
 
-  <main id="main-content">
-  <section class="hero">
-    <div class="hero-body">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered">
-          <div class="column has-text-centered">
-            <!-- TODO: Replace with your paper title -->
-            <h1 class="title is-1 publication-title">Academic Project Page</h1>
-            <div class="is-size-5 publication-authors">
-              <!-- TODO: Replace with your paper authors and their personal links -->
-              <span class="author-block">
-                <a href="FIRST AUTHOR PERSONAL LINK" target="_blank">First Author</a><sup>*</sup>,</span>
-                <span class="author-block">
-                  <a href="SECOND AUTHOR PERSONAL LINK" target="_blank">Second Author</a><sup>*</sup>,</span>
-                  <span class="author-block">
-                    <a href="THIRD AUTHOR PERSONAL LINK" target="_blank">Third Author</a>
-                  </span>
-                  </div>
+  <main id="top">
+    <header class="hero">
+      <div class="container">
+        <div class="eyebrow"><span class="dot"></span> ICRA 2027</div>
+        <h1>
+          <span class="title-line"><span class="gradient-text">HiP-MPPI:</span> Hierarchical Projection</span>
+          <span class="title-line">for Prioritized Constraint Handling</span>
+          <span class="title-line">in Model Predictive Path Integral Control</span>
+        </h1>
+        <p class="subtitle">Resolving conflicting constraints by priority while keeping each cluster-wise MPPI update inside a hierarchy-determined shared convex set.</p>
+        <!-- Replace the line below with final author / affiliation info when de-anonymizing. -->
+        <div class="authors">Anonymous Authors <span>·</span> ICRA 2027</div>
+        <div class="hero-actions">
+          <a class="btn primary" href="static/pdfs/paper.pdf" target="_blank">▣&nbsp; Paper</a>
+          <span class="btn coming-soon" aria-label="Code coming soon">⌘&nbsp; Code · Coming Soon</span>
+          <a class="btn" href="#experiments">▶&nbsp; Experiments</a>
+        </div>
+      </div>
+    </header>
 
-                  <div class="is-size-5 publication-authors">
-                    <!-- TODO: Replace with your institution and conference/journal info -->
-                    <span class="author-block">Institution Name<br>Conference name and year</span>
-                    <!-- TODO: Remove this line if no equal contribution -->
-                    <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span>
-                  </div>
+    <!-- REPRESENTATIVE / TEASER VIDEO -->
+    <section class="teaser-wrap">
+      <div class="container reveal">
+        <div class="video-shell">
+          <video autoplay muted loop playsinline controls preload="metadata" aria-label="HiP-MPPI representative video">
+            <source src="static/videos/teaser.mp4" type="video/mp4" />
+            Your browser does not support HTML5 video.
+          </video>
+        </div>
+        <p class="teaser-caption">HiP-MPPI handles constraint conflicts according to a prescribed hierarchy, selectively relaxing lower-priority constraints when necessary while preserving higher-priority decisions.</p>
+      </div>
+    </section>
 
-                  <div class="column has-text-centered">
-                    <div class="publication-links">
-                         <!-- TODO: Update with your arXiv paper ID -->
-                      <span class="link-block">
-                        <a href="https://arxiv.org/pdf/<ARXIV PAPER ID>.pdf" target="_blank"
-                        class="external-link button is-normal is-rounded is-dark">
-                        <span class="icon">
-                          <i class="fas fa-file-pdf"></i>
-                        </span>
-                        <span>Paper</span>
-                      </a>
-                    </span>
+    <!-- ABSTRACT -->
+    <section id="abstract" class="content-section alt">
+      <div class="container reveal">
+        <div class="section-head">
+          <div class="kicker">Paper overview</div>
+          <h2>Abstract</h2>
+        </div>
+        <div class="abstract-card">
+          <p>
+            Conventional MPPI commonly handles constraints through penalty terms, motivating recent approaches that enforce constraints more explicitly. However, multiple constraints may not be simultaneously satisfiable, and constraint handling at the individual-sample level does not generally ensure constraint preservation through the importance-weighted update. We propose Hierarchical Projection MPPI (HiP-MPPI), which handles conflicting constraints according to prescribed priorities using hierarchical shared convex sets. HiP-MPPI first clusters sampled control sequences to identify distinct sampled regions. For each region, hierarchical shared convex set construction and representative projection are iterated to move the linearization point toward the hierarchy-determined shared set and reduce the linearization error associated with the initial representative. New samples are then generated around the refined representative and projected onto the corresponding shared set. By convexity, each cluster-wise MPPI weighted update remains within the same set without requiring post-update correction. Simulation and real-robot experiments show that HiP-MPPI yields priority-dependent constraint relaxation and corresponding robot motions across diverse tasks.
+          </p>
+        </div>
+        <div class="stat-grid">
+          <div class="stat"><strong>Priority-aware</strong><span>Conflicting constraints are resolved according to prescribed priority levels.</span></div>
+          <div class="stat"><strong>Convex update</strong><span>Projected samples share a convex set, so the weighted update stays in the same set.</span></div>
+          <div class="stat"><strong>3 tasks</strong><span>Racetrack navigation, tabletop mobile manipulation, and real-robot bottle transport.</span></div>
+        </div>
+      </div>
+    </section>
 
-                    <!-- TODO: Add your supplementary material PDF or remove this section -->
-                    <span class="link-block">
-                      <a href="static/pdfs/supplementary_material.pdf" target="_blank"
-                      class="external-link button is-normal is-rounded is-dark">
-                      <span class="icon">
-                        <i class="fas fa-file-pdf"></i>
-                      </span>
-                      <span>Supplementary</span>
-                    </a>
-                  </span>
+    <!-- MOTIVATION / FIG 1 -->
+    <section class="content-section">
+      <div class="container reveal">
+        <div class="two-col">
+          <div>
+            <div class="kicker">Why HiP-MPPI?</div>
+            <h2>Constraint conflicts need more than penalties.</h2>
+            <p class="section-lead">Individual rollout correction does not, by itself, guarantee that the importance-weighted MPPI update will preserve the same constraints. HiP-MPPI instead builds a cluster-wise hierarchical shared convex set and performs the weighted update inside it.</p>
+            <div class="copy-card" style="margin-top:22px">
+              <h3>The key idea</h3>
+              <p>Maintain several locally represented candidate regions, resolve constraint conflicts through hierarchy-aware slack, and preserve the resulting bounds through the MPPI convex combination.</p>
+            </div>
+          </div>
+          <figure style="margin:0">
+            <div class="image-shell">
+              <img src="static/images/fig1.png" alt="Figure 1: cluster-wise hierarchical shared-set concept" loading="lazy" />
+            </div>
+            <figcaption class="figure-caption">Fig. 1 — Cluster-wise hierarchical shared-set concept. Put the paper's Fig. 1 at <b>static/images/fig1.png</b>.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
 
-                  <!-- TODO: Replace with your GitHub repository URL -->
-                  <span class="link-block">
-                    <a href="https://github.com/YOUR REPO HERE" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fab fa-github"></i>
-                    </span>
-                    <span>Code</span>
-                  </a>
-                </span>
+    <!-- METHOD / FIG 2 -->
+    <section id="method" class="content-section alt">
+      <div class="container reveal">
+        <div class="section-head">
+          <div class="kicker">Method</div>
+          <h2>Hierarchical Projection MPPI</h2>
+          <p class="section-lead">The algorithm alternates between local shared-set construction and representative refinement, then resamples and projects controls before the cluster-wise MPPI update.</p>
+        </div>
 
-                <!-- TODO: Update with your arXiv paper ID -->
-                <span class="link-block">
-                  <a href="https://arxiv.org/abs/<ARXIV PAPER ID>" target="_blank"
-                  class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="ai ai-arxiv"></i>
-                  </span>
-                  <span>arXiv</span>
-                </a>
-              </span>
+        <figure style="margin:0 0 26px">
+          <div class="image-shell">
+            <img src="static/images/fig2.png" alt="Figure 2: overall HiP-MPPI procedure" loading="lazy" />
+          </div>
+          <figcaption class="figure-caption">Fig. 2 — Overall procedure of HiP-MPPI. Put the paper's Fig. 2 at <b>static/images/fig2.png</b>.</figcaption>
+        </figure>
+
+        <div class="algorithm-grid">
+          <article class="step"><div class="step-num">01</div><h4>Initial sampling</h4><p>Sample control sequences around the nominal sequence and partition them with k-means.</p></article>
+          <article class="step"><div class="step-num">02</div><h4>Representative</h4><p>Select the medoid of each cluster as a local representative in control-sequence space.</p></article>
+          <article class="step"><div class="step-num">03</div><h4>Hierarchical shared set</h4><p>Construct priority levels with HQP and refine the representative to reduce local linearization error.</p></article>
+          <article class="step"><div class="step-num">04</div><h4>Resample & project</h4><p>Generate samples around the refined representative and project them onto the shared convex set.</p></article>
+          <article class="step"><div class="step-num">05</div><h4>Update & select</h4><p>Compute the cluster-wise MPPI weighted update, then select candidates by constraint priority and cost.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIMENTS -->
+    <section id="experiments" class="content-section">
+      <div class="container reveal">
+        <div class="section-head">
+          <div class="kicker">Experiments</div>
+          <h2>From simulation to hardware</h2>
+          <p class="section-lead">The experiments test quantitative baseline performance, hierarchical relaxation in whole-body control, and priority-dependent behavior on a physical robot.</p>
+        </div>
+
+        <!-- RACETRACK -->
+        <div class="experiment-block">
+          <div class="experiment-title-row">
+            <div>
+              <h3>01 · Racetrack navigation</h3>
+              <p>A constrained navigation task with four priorities: control-input limits, collision avoidance, 2 m/s speed tracking, and centerline-band keeping.</p>
+            </div>
+            <div class="pill">20 trials × 3 laps</div>
+          </div>
+          <div class="constraint-row">
+            <span>P1 · Control-input limits</span><span>P2 · Collision avoidance</span><span>P3 · 2 m/s speed</span><span>P4 · Centerline band</span>
+          </div>
+
+          <div class="video-grid">
+            <article class="media-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="static/videos/racetrack_baseline_failure.mp4" type="video/mp4" />
+              </video>
+              <div class="media-info">
+                <div class="media-label"><span class="status fail"></span>Baseline · failure case</div>
+                <p>Place your representative baseline failure video here.</p>
+              </div>
+            </article>
+            <article class="media-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="static/videos/racetrack_hip_mppi_success.mp4" type="video/mp4" />
+              </video>
+              <div class="media-info">
+                <div class="media-label"><span class="status success"></span>HiP-MPPI · success</div>
+                <p>HiP-MPPI relaxes lower-priority constraints when needed while preserving higher-priority decisions.</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="result-strip">
+            <div><strong>Quantitative result.</strong> HiP-MPPI achieved 100% success for both K = 100 and K = 30, with zero final-plan violations of P1 and P2.</div>
+            <div class="highlight">100% @ K=100 / K=30</div>
+          </div>
+
+          <div class="table-block">
+            <div class="table-heading">
+              <div><h4>Racetrack quantitative comparison</h4></div>
+              <p>Table II · 20 trials × 3 laps</p>
+            </div>
+            <div class="table-scroll" role="region" aria-label="Racetrack quantitative comparison table" tabindex="0">
+              <table class="research-table">
+                <thead>
+                  <tr>
+                    <th rowspan="2">Method</th>
+                    <th rowspan="2">K</th>
+                    <th colspan="3">Executed trajectory</th>
+                    <th colspan="5">Sampled rollouts</th>
+                    <th colspan="2">Final plan</th>
+                    <th rowspan="2">Comp. time<br>[ms]</th>
+                  </tr>
+                  <tr>
+                    <th>Success<br>[%]</th>
+                    <th>P3<br>[m/s]</th>
+                    <th>P4 Viol.<br>[%]</th>
+                    <th>P1 Viol.<br>[%]</th>
+                    <th>P1 Max.<br>(Δv/Δω)</th>
+                    <th>P2 Collision<br>[%]</th>
+                    <th>P2 Collision<br>Max. [m]</th>
+                    <th>P2 Margin<br>[%]</th>
+                    <th>P1<br>[%]</th>
+                    <th>P2<br>[%]</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="method-start"><td>MPPI</td><td>100</td><td>55</td><td>1.844 ± 0.480</td><td>12.80</td><td>2.281</td><td>1.352/1.448</td><td>36.418</td><td>1.1365</td><td>45.173</td><td>0.000</td><td>3.667</td><td>2.6 ± 0.6</td></tr>
+                  <tr><td></td><td>30</td><td>0</td><td>1.652 ± 0.616</td><td>22.96</td><td>6.863</td><td>1.494/1.680</td><td>43.764</td><td>2.1182</td><td>52.314</td><td>0.757</td><td>6.268</td><td>2.5 ± 0.3</td></tr>
+                  <tr class="method-start"><td>Shield-MPPI</td><td>100</td><td>40</td><td>1.775 ± 0.554</td><td>19.21</td><td>3.345</td><td>1.732/1.444</td><td>35.775</td><td>1.1909</td><td>43.846</td><td>0.357</td><td>0.071</td><td>4.7 ± 2.8</td></tr>
+                  <tr><td></td><td>30</td><td>0</td><td>1.430 ± 0.731</td><td>36.97</td><td>11.607</td><td>1.463/2.048</td><td>42.750</td><td>1.0280</td><td>52.073</td><td>1.997</td><td>0.388</td><td>5.2 ± 4.2</td></tr>
+                  <tr class="method-start"><td>CSC-MPPI</td><td>100</td><td>95</td><td>1.997 ± 0.115</td><td>7.53</td><td>0.761</td><td>0.349/3.264</td><td>1.289</td><td>1.6906</td><td>1.367</td><td>0.008</td><td>4.131</td><td>28.6 ± 28.9</td></tr>
+                  <tr><td></td><td>30</td><td>50</td><td>1.861 ± 0.411</td><td>21.60</td><td>0.683</td><td>0.278/2.388</td><td>1.167</td><td>1.8799</td><td>1.255</td><td>0.061</td><td>3.030</td><td>25.0 ± 26.3</td></tr>
+                  <tr class="method-start"><td>QP-MPPI</td><td>100</td><td>0</td><td>1.980 ± 0.090</td><td>3.91</td><td>22.515</td><td>2.016/1.767</td><td>29.376</td><td>1.1478</td><td>32.880</td><td>7.911</td><td>29.778</td><td>55.9 ± 3.0</td></tr>
+                  <tr><td></td><td>30</td><td>0</td><td>1.983 ± 0.088</td><td>4.17</td><td>22.511</td><td>0.309/1.142</td><td>29.358</td><td>0.5491</td><td>32.845</td><td>9.139</td><td>31.854</td><td>52.9 ± 2.3</td></tr>
+                  <tr class="method-start hip-row"><td>HiP-MPPI</td><td>100</td><td class="best">100</td><td class="best">2.000 ± 0.009</td><td>4.06</td><td>0.029</td><td>0.003/0.007</td><td>0.003</td><td>0.0080</td><td>0.028</td><td class="best">0.000</td><td class="best">0.000</td><td>85.4 ± 4.2</td></tr>
+                  <tr class="hip-row"><td></td><td>30</td><td class="best">100</td><td class="best">2.000 ± 0.010</td><td>4.31</td><td>0.034</td><td>0.003/0.005</td><td>0.006</td><td>0.0094</td><td>0.057</td><td class="best">0.000</td><td class="best">0.000</td><td>81.1 ± 4.3</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="table-note">Full paper table reproduced here for the project page. On narrow screens, swipe horizontally to inspect all metrics.</p>
+          </div>
+        </div>
+
+        <!-- TABLETOP MOBILE MANIPULATOR -->
+        <div class="experiment-block">
+          <div class="experiment-title-row">
+            <div>
+              <h3>02 · Tabletop mobile manipulation</h3>
+              <p>A Husky mobile base with a 7-DoF Franka arm reaches for an object while handling a joint limit, a moving obstacle, a static obstacle, and a preference to suppress base motion.</p>
+            </div>
+            <div class="pill">Whole-body hierarchy</div>
+          </div>
+          <div class="constraint-row">
+            <span>P1 · Control-input limits</span><span>P2 · Joint-limit avoidance</span><span>P3 · Whole-body obstacle avoidance</span><span>P4 · Base-motion suppression</span>
+          </div>
+
+          <div class="tabletop-layout">
+            <article class="media-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="static/videos/tabletop_mobile_manipulator.mp4" type="video/mp4" />
+              </video>
+              <div class="media-info">
+                <div class="media-label"><span class="status success"></span>Mobile manipulator experiment</div>
+                <p>Use the full experiment video instead of the snapshot sequence from the paper.</p>
+              </div>
+            </article>
+            <div class="side-notes">
+              <article class="note">
+                <div class="time">≈ 2 s</div>
+                <h4>First hierarchy relaxation</h4>
+                <p>Arm motion alone can no longer satisfy the higher-priority joint-limit and obstacle constraints while keeping the base fixed, so P4 is relaxed and the mobile base begins to move.</p>
+              </article>
+              <article class="note">
+                <div class="time">≈ 8 s</div>
+                <h4>Additional base motion</h4>
+                <p>As clearance to the static obstacle decreases, the hierarchy again activates P4 slack and allows additional base motion.</p>
+              </article>
+            </div>
+          </div>
+
+          <figure class="full-figure" style="margin-bottom:0">
+            <div class="image-shell">
+              <img src="static/images/fig5.png" alt="Figure 5: tabletop experiment quantitative result graphs" loading="lazy" />
+            </div>
+            <figcaption class="figure-caption">Fig. 5 — Joint-limit angle, obstacle clearances, and normalized P4 slack. Put the original result graph at <b>static/images/fig5.png</b>.</figcaption>
+          </figure>
+        </div>
+
+        <!-- REAL ROBOT -->
+        <div id="real-robot" class="experiment-block">
+          <div class="experiment-title-row">
+            <div>
+              <h3>03 · Real-robot bottle transport</h3>
+              <p>A 7-DoF Franka manipulator transports a grasped bottle around a spherical obstacle. Swapping the priority between bottle tilt and end-effector height produces different motions for the same task.</p>
+            </div>
+            <div class="pill">Physical robot</div>
+          </div>
+          <div class="constraint-row">
+            <span>P1 · Control limits</span><span>P2 · Joint limits</span><span>P3 · Workspace</span><span>P4 · Obstacle avoidance</span><span>P5/P6 · Height ↔ Tilt</span>
+          </div>
+
+          <div class="video-grid">
+            <article class="media-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="static/videos/real_robot_tilt_high.mp4" type="video/mp4" />
+              </video>
+              <div class="media-info">
+                <div class="priority-badge"><b>Tilt priority &gt; Height priority</b></div>
+                <div class="media-label"><span class="status success"></span>Keep bottle upright</div>
+                <p>The robot relaxes end-effector height and passes above the obstacle while keeping the bottle close to upright.</p>
+              </div>
+            </article>
+            <article class="media-card">
+              <video controls muted loop playsinline preload="metadata">
+                <source src="static/videos/real_robot_height_high.mp4" type="video/mp4" />
+              </video>
+              <div class="media-info">
+                <div class="priority-badge"><b>Height priority &gt; Tilt priority</b></div>
+                <div class="media-label"><span class="status success"></span>Tilt around obstacle</div>
+                <p>The robot maintains the height constraint and relaxes the lower-priority bottle-tilt constraint to pass around the obstacle.</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="takeaway">
+            <div class="takeaway-icon">✓</div>
+            <div>
+              <h3>Same task, different priorities, different motion.</h3>
+              <p>HiP-MPPI directly expresses the desired constraint trade-off through the hierarchy rather than relying on penalty-weight tuning.</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-
-<!-- Teaser video-->
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <!-- TODO: Replace with your teaser video -->
-      <video poster="" id="tree" autoplay controls muted loop height="100%" preload="metadata">
-        <!-- TODO: Add your video file path here -->
-        <source src="static/videos/banner_video.mp4" type="video/mp4">
-      </video>
-      <!-- TODO: Replace with your video description -->
-      <h2 class="subtitle has-text-centered">
-        Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus tellus, maximus vel lectus at, placerat pretium mi. Maecenas dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut maximus. 
-      </h2>
-    </div>
-  </div>
-</section>
-<!-- End teaser video -->
-
-<!-- Paper abstract -->
-<section class="section hero is-light">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <!-- TODO: Replace with your paper abstract -->
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ullamcorper tellus sed ante aliquam tempus. Etiam porttitor urna feugiat nibh elementum, et tempor dolor mattis. Donec accumsan enim augue, a vulputate nisi sodales sit amet. Proin bibendum ex eget mauris cursus euismod nec et nibh. Maecenas ac gravida ante, nec cursus dui. Vivamus purus nibh, placerat ac purus eget, sagittis vestibulum metus. Sed vestibulum bibendum lectus gravida commodo. Pellentesque auctor leo vitae sagittis suscipit.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End paper abstract -->
-
-
-<!-- Image carousel -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <div id="results-carousel" class="carousel results-carousel">
-       <div class="item">
-        <!-- TODO: Replace with your research result images -->
-        <img src="static/images/carousel1.jpg" alt="First research result visualization" loading="lazy"/>
-        <!-- TODO: Replace with description of this result -->
-        <h2 class="subtitle has-text-centered">
-          First image description.
-        </h2>
-      </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel2.jpg" alt="Second research result visualization" loading="lazy"/>
-        <h2 class="subtitle has-text-centered">
-          Second image description.
-        </h2>
-      </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel3.jpg" alt="Third research result visualization" loading="lazy"/>
-        <h2 class="subtitle has-text-centered">
-         Third image description.
-       </h2>
-     </div>
-     <div class="item">
-      <!-- Your image here -->
-      <img src="static/images/carousel4.jpg" alt="Fourth research result visualization" loading="lazy"/>
-      <h2 class="subtitle has-text-centered">
-        Fourth image description.
-      </h2>
-    </div>
-  </div>
-</div>
-</div>
-</section>
-<!-- End image carousel -->
-
-
-
-
-<!-- Youtube video -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <!-- Paper video. -->
-      <h2 class="title is-3">Video Presentation</h2>
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          
-          <div class="publication-video">
-            <!-- TODO: Replace with your YouTube video ID -->
-            <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <section class="content-section alt">
+      <div class="container reveal">
+        <div class="two-col">
+          <div>
+            <div class="kicker">Takeaway</div>
+            <h2>Priorities become behavior.</h2>
+            <p class="section-lead">HiP-MPPI combines hierarchical constraint resolution with convex-set preservation of cluster-wise MPPI updates. Across navigation, whole-body mobile manipulation, and hardware experiments, lower-priority constraints are relaxed only when needed to protect higher-priority decisions.</p>
+          </div>
+          <div class="copy-card">
+            <h3>What to remember</h3>
+            <p><b style="color:#dcecff">Hierarchical shared convex sets</b> resolve conflicts. <b style="color:#dcecff">Representative refinement</b> improves the local approximation. <b style="color:#dcecff">Projection + convex combination</b> preserves the shared set through the MPPI update.</p>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-<!-- End youtube video -->
+    </section>
 
 
-<!-- Video carousel -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-3">Another Carousel</h2>
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-video1">
-          <!-- TODO: Add poster image for better preview -->
-          <video poster="" id="video1" controls muted loop height="100%" preload="metadata">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel1.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video2">
-          <!-- TODO: Add poster image for better preview -->
-          <video poster="" id="video2" controls muted loop height="100%" preload="metadata">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel2.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video3">
-          <!-- TODO: Add poster image for better preview -->
-          <video poster="" id="video3" controls muted loop height="100%" preload="metadata">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel3.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End video carousel -->
+    <!-- APPENDIX / PARAMETER PLACEHOLDERS -->
+    <section id="appendix" class="content-section">
+      <div class="container reveal">
+        <div class="appendix-shell">
+          <div class="appendix-intro">
+            <div>
+              <div class="kicker">Appendix</div>
+              <h2>Implementation parameters</h2>
+              <p>Parameter slots are intentionally left as placeholders so the final project-page values can be filled in after the experimental configuration is frozen.</p>
+            </div>
+            <div class="pill">Fill before release</div>
+          </div>
 
+          <div class="parameter-grid">
+            <article class="parameter-card">
+              <div class="parameter-card-header">
+                <h3>Core HiP-MPPI parameters</h3>
+                <p>Shared controller / sampling / projection settings.</p>
+              </div>
+              <div class="table-scroll">
+                <table class="parameter-table">
+                  <thead><tr><th>Parameter</th><th>Racetrack</th><th>Tabletop</th><th>Real robot</th><th>Notes</th></tr></thead>
+                  <tbody>
+                    <tr><td>Prediction horizon, T</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Control period, Δt</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Sampling budget, K</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Number of clusters, M</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Refinement iterations, R</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Temperature, λ</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Initial covariance, Σ<sub>init</sub></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Resampling covariance, Σ<sub>res</sub></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Trust-region width, Δ</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Projection weight, W</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Linearization margins, {m<sub>i</sub>}</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Priority tolerances, {δ<sub>ℓ</sub>}</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
 
-
-
-
-
-<!-- Paper poster -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title">Poster</h2>
-
-      <!-- TODO: Replace with your poster PDF -->
-      <iframe  src="static/pdfs/sample.pdf" width="100%" height="550">
-          </iframe>
-        
-      </div>
-    </div>
-  </section>
-<!--End paper poster -->
-
-
-
-<!--BibTex citation -->
-  <section class="section" id="BibTeX">
-    <div class="container is-max-desktop content">
-      <div class="bibtex-header">
-        <h2 class="title">BibTeX</h2>
-        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
-          <i class="fas fa-copy"></i>
-          <span class="copy-text">Copy</span>
-        </button>
-      </div>
-      <pre id="bibtex-code"><code>@article{YourPaperKey2024,
-  title={Your Paper Title Here},
-  author={First Author and Second Author and Third Author},
-  journal={Conference/Journal Name},
-  year={2024},
-  url={https://your-domain.com/your-project-page}
-}</code></pre>
-    </div>
-</section>
-<!--End BibTex citation -->
-
-
-  <footer class="footer">
-  <div class="container">
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-
-          <p>
-            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
-          </p>
-
+            <article class="parameter-card">
+              <div class="parameter-card-header">
+                <h3>Experiment-specific settings</h3>
+                <p>Add task costs, constraint bounds, solver settings, hardware details, or any additional implementation notes here.</p>
+              </div>
+              <div class="table-scroll">
+                <table class="parameter-table">
+                  <thead><tr><th>Experiment</th><th>Parameter / setting</th><th>Value</th><th>Notes</th></tr></thead>
+                  <tbody>
+                    <tr><td>Racetrack</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Racetrack</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Tabletop</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Tabletop</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Real robot</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Real robot</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+          <div class="appendix-tip">Source-editing tip: search this HTML for <b>TODO</b> to jump through every parameter field that still needs to be filled.</div>
         </div>
       </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>HiP-MPPI · Academic project page</span>
+      <span>Replace author / affiliation / final paper links before publishing.</span>
     </div>
-  </div>
-</footer>
+  </footer>
 
-<!-- Statcounter tracking code -->
-  
-<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
 
-    <!-- End of Statcounter Code -->
-
-  </body>
-  </html>
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+  </script>
+</body>
+</html>
