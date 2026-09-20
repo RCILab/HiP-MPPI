@@ -346,6 +346,14 @@
     .comparison-heading span { color: #7a8ca0; font-size: 12px; }
     .racetrack-video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .racetrack-video-grid .our-method-card { grid-column: 1 / -1; }
+    .racetrack-video-grid .media-card video {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: auto;
+      object-fit: contain;
+      background: #030811;
+    }
     .our-method-card {
       border-color: rgba(47,165,125,.24);
       background: linear-gradient(145deg, rgba(255,255,255,.96), rgba(237,250,246,.9));
@@ -649,7 +657,7 @@
     <section class="teaser-wrap">
       <div class="container reveal">
         <div class="video-shell">
-          <video autoplay muted loop playsinline controls preload="metadata" aria-label="HiP-MPPI representative video">
+          <video loop playsinline controls preload="metadata" aria-label="HiP-MPPI representative video">
             <source src="static/videos/teaser.mp4" type="video/mp4" />
             Your browser does not support HTML5 video.
           </video>
