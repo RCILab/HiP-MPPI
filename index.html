@@ -499,6 +499,34 @@
       font-weight: 750;
       letter-spacing: .04em;
     }
+    .cost-design-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      padding: 18px;
+    }
+    .cost-design-card {
+      padding: 18px;
+      border: 1px solid rgba(40,73,112,.10);
+      border-radius: 16px;
+      background: rgba(247,251,255,.88);
+    }
+    .cost-design-card h4 { margin: 0 0 8px; font-size: 15px; color: #172235; }
+    .cost-design-card p { margin: 10px 0 0; color: #6c8095; font-size: 12.5px; line-height: 1.65; }
+    .cost-equation {
+      padding: 13px 14px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid rgba(40,73,112,.08);
+      color: #21364d;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 15px;
+      line-height: 1.75;
+      overflow-x: auto;
+    }
+    .cost-equation .eq-line { white-space: nowrap; }
+    .cost-design-card .eq-ref { color: #167baa; font-size: 11px; font-weight: 800; letter-spacing: .04em; }
+
     .appendix-tip {
       margin-top: 16px;
       padding: 14px 16px;
@@ -591,6 +619,7 @@
       .stat-grid { grid-template-columns: 1fr; }
       .tabletop-layout .media-card video { min-height: 0; max-height: none; }
       .side-notes { grid-template-columns: 1fr; }
+      .cost-design-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 680px) {
       .container { width: min(100% - 24px, var(--max)); }
@@ -1022,20 +1051,20 @@
               </div>
               <div class="table-scroll">
                 <table class="parameter-table">
-                  <thead><tr><th>Parameter</th><th>Racetrack</th><th>Tabletop</th><th>Real robot</th><th>Notes</th></tr></thead>
+                  <thead><tr><th>Parameter</th><th>Racetrack</th><th>Tabletop</th><th>Real robot</th></tr></thead>
                   <tbody>
-                    <tr><td>Prediction horizon, T</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Control period, Δt</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Sampling budget, K</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Number of clusters, M</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Refinement iterations, R</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Temperature, λ</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Initial covariance, Σ<sub>init</sub></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Resampling covariance, Σ<sub>res</sub></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Trust-region width, Δ</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Projection weight, W</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Linearization margins, {m<sub>i</sub>}</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Priority tolerances, {δ<sub>ℓ</sub>}</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Prediction horizon, T</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Control period, Δt</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Sampling budget, K</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Number of clusters, M</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Refinement iterations, R</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Temperature, λ</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Initial covariance, Σ<sub>init</sub></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Resampling covariance, Σ<sub>res</sub></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Trust-region width, Δ</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Projection weight, W</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Linearization margins, {m<sub>i</sub>}</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Priority tolerances, {δ<sub>ℓ</sub>}</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
                   </tbody>
                 </table>
               </div>
@@ -1043,21 +1072,29 @@
 
             <article class="parameter-card">
               <div class="parameter-card-header">
-                <h3>Experiment-specific settings</h3>
-                <p>Task-specific costs, constraint bounds, solver settings, and hardware details.</p>
+                <h3>Task cost design</h3>
+                <p>Performance objectives used in the racetrack and tabletop experiments.</p>
               </div>
-              <div class="table-scroll">
-                <table class="parameter-table">
-                  <thead><tr><th>Experiment</th><th>Parameter / setting</th><th>Value</th><th>Notes</th></tr></thead>
-                  <tbody>
-                    <tr><td>Racetrack</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Racetrack</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Tabletop</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Tabletop</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Real robot</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Real robot</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                  </tbody>
-                </table>
+              <div class="cost-design-grid">
+                <div class="cost-design-card">
+                  <div class="eq-ref">RACETRACK · Eq. (28)</div>
+                  <h4>Track following and forward progress</h4>
+                  <div class="cost-equation" aria-label="Racetrack task cost">
+                    <div class="eq-line"><i>J</i><sub>task</sub> = Σ<sub>t=0</sub><sup>T−1</sup> γ<sup>t</sup> [ w<sub>c</sub>(e<sub>c,t+1</sub>)² + w<sub>h</sub>(e<sub>ψ,t+1</sub>)² ]</div>
+                    <div class="eq-line">+ w<sub>c</sub>(e<sub>c,T</sub>)² + w<sub>h</sub>(e<sub>ψ,T</sub>)² − w<sub>pr</sub> Δs</div>
+                  </div>
+                  <p>The objective penalizes centerline and heading errors while rewarding forward progress along the track. γ is the temporal discount factor.</p>
+                </div>
+                <div class="cost-design-card">
+                  <div class="eq-ref">TABLETOP · Eq. (29)</div>
+                  <h4>Goal reaching and smooth whole-body motion</h4>
+                  <div class="cost-equation" aria-label="Tabletop task cost">
+                    <div class="eq-line"><i>J</i><sub>task</sub> = Σ<sub>t=0</sub><sup>T−1</sup> γ<sup>t</sup> [ w<sub>p</sub>‖p<sub>ee,t</sub>−p<sub>g</sub>‖² + w<sub>u</sub>‖u<sub>t</sub>‖²</div>
+                    <div class="eq-line">+ w<sub>Δ</sub>‖u<sub>t</sub>−u<sup>prev</sup><sub>t</sub>‖² + w<sub>s</sub>η<sub>t</sub>‖ṗ<sub>ee,t</sub>‖² ]</div>
+                    <div class="eq-line">+ w<sub>p</sub>‖p<sub>ee,T</sub>−p<sub>g</sub>‖²</div>
+                  </div>
+                  <p>The objective combines end-effector goal error, control effort, control smoothness, and proximity-dependent end-effector speed suppression near the goal.</p>
+                </div>
               </div>
             </article>
           </div>
@@ -1070,7 +1107,6 @@
   <footer>
     <div class="container footer-inner">
       <span>HiP-MPPI · Academic project page</span>
-      <span>Replace author / affiliation / final paper links before publishing.</span>
     </div>
   </footer>
 
