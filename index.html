@@ -483,9 +483,14 @@
     .parameter-card-header { padding: 17px 19px 13px; border-bottom: 1px solid rgba(40,73,112,.08); }
     .parameter-card-header h3 { margin: 0 0 3px; font-size: 16px; }
     .parameter-card-header p { margin: 0; color: #74889e; font-size: 12px; }
-    .parameter-table { min-width: 720px; font-size: 12px; }
-    .parameter-table td { height: 43px; }
-    .parameter-table td:nth-child(n+2) { min-width: 150px; }
+    .parameter-table { min-width: 760px; font-size: 12px; font-variant-numeric: tabular-nums; }
+    .parameter-table th, .parameter-table td { padding: 12px 14px; }
+    .parameter-table td { height: 46px; }
+    .parameter-table th:first-child, .parameter-table td:first-child { width: 31%; font-weight: 720; color: #31465d; }
+    .parameter-table th:nth-child(n+2), .parameter-table td:nth-child(n+2) { min-width: 170px; text-align: center; }
+    .parameter-table tbody tr:nth-child(even) td { background: rgba(100,216,255,.022); }
+    .parameter-table tbody tr:hover td { background: rgba(100,216,255,.055); }
+    .parameter-table sup, .parameter-table sub { line-height: 0; }
     .param-placeholder {
       display: inline-flex;
       min-width: 72px;
@@ -1024,18 +1029,18 @@
                 <table class="parameter-table">
                   <thead><tr><th>Parameter</th><th>Racetrack</th><th>Tabletop</th><th>Real robot</th></tr></thead>
                   <tbody>
-                    <tr><td>Prediction horizon, T</td><td>15</td><td>10 steps (1.0 s)</td><td>10 steps (1.0 s)</td></tr>
-                    <tr><td>Control period, Δt</td><td>0.1 s</td><td>0.1 s (10 Hz)</td><td>0.1 s (10 Hz)</td></tr>
+                    <tr><td>Prediction horizon, T</td><td>15</td><td>10</td><td>10</td></tr>
+                    <tr><td>Control period, Δt</td><td>0.1 s</td><td>0.1 s</td><td>0.1 s</td></tr>
                     <tr><td>Sampling budget, K</td><td>100 / 30</td><td>100</td><td>100</td></tr>
                     <tr><td>Number of clusters, M</td><td>3</td><td>2</td><td>2</td></tr>
                     <tr><td>Refinement iterations, R</td><td>3</td><td>2</td><td>2</td></tr>
-                    <tr><td>Temperature, λ</td><td>5.0</td><td>0.2 (relative to cost range)</td><td>0.2 (relative to cost range)</td></tr>
-                    <tr><td>Initial covariance, Σ<sub>init</sub></td><td>diag(0.3<sup>2</sup>, 0.3<sup>2</sup>)</td><td>diag(1.2<sup>2</sup>) rad<sup>2</sup>/s<sup>2</sup>, all 7 axes</td><td>diag(1.2<sup>2</sup>) rad<sup>2</sup>/s<sup>2</sup>, all 7 axes</td></tr>
-                    <tr><td>Resampling covariance, Σ<sub>res</sub></td><td>Σ<sub>init</sub> (α = 1.0)</td><td>Σ<sub>init</sub>; shrink to 0.3× within 10 cm of target</td><td>Σ<sub>init</sub>; shrink to 0.3× within 10 cm of target</td></tr>
-                    <tr><td>Trust-region width, Δ</td><td>(0.7, 0.3) for (v, ω)</td><td>0.6, 0.36 rad/s</td><td>0.6, 0.36 rad/s</td></tr>
+                    <tr><td>Temperature, λ</td><td>5.0</td><td>0.2</td><td>0.2</td></tr>
+                    <tr><td>Initial covariance, Σ<sub>init</sub></td><td>diag(0.3<sup>2</sup>, 0.3<sup>2</sup>)</td><td>diag(1.2<sup>2</sup>)</td><td>diag(1.2<sup>2</sup>)</td></tr>
+                    <tr><td>Resampling covariance, Σ<sub>res</sub></td><td>Σ<sub>init</sub> (α = 1.0)</td><td>Σ<sub>init</sub> → 0.3Σ<sub>init</sub> (&lt; 10 cm)</td><td>Σ<sub>init</sub> → 0.3Σ<sub>init</sub> (&lt; 10 cm)</td></tr>
+                    <tr><td>Trust-region width, Δ</td><td>(0.7, 0.3) · (v, ω)</td><td>(0.6, 0.36) rad/s</td><td>(0.6, 0.36) rad/s</td></tr>
                     <tr><td>Projection weight, W</td><td>diag(γ<sup>k/(T−1)</sup>), γ = 0.7</td><td>I</td><td>I</td></tr>
-                    <tr><td>Linearization margins, {m<sub>i</sub>}</td><td>0.03 / 0.03 / 0.02 m</td><td>obstacle 4.0 cm; hand height ±1 mm; tilt 1°; tangential velocity 0.10 m/s</td><td>obstacle 4.0 cm; hand height ±1 mm; tilt 1°; tangential velocity 0.10 m/s</td></tr>
-                    <tr><td>Priority tolerances, {δ<sub>ℓ</sub>}</td><td>10<sup>−5</sup>, 10<sup>−5</sup>, 10<sup>−5</sup>, 5×10<sup>−3</sup>, 10<sup>−3</sup></td><td>10<sup>−5</sup>, all levels</td><td>10<sup>−5</sup>, all levels</td></tr>
+                    <tr><td>Linearization margins, {m<sub>i</sub>}</td><td>0.03 / 0.03 / 0.02 m</td><td>4.0 cm / ±1 mm / 1° / 0.10 m/s</td><td>4.0 cm / ±1 mm / 1° / 0.10 m/s</td></tr>
+                    <tr><td>Priority tolerances, {δ<sub>ℓ</sub>}</td><td>10<sup>−5</sup> / 10<sup>−5</sup> / 10<sup>−5</sup> / 5×10<sup>−3</sup> / 10<sup>−3</sup></td><td>10<sup>−5</sup></td><td>10<sup>−5</sup></td></tr>
                   </tbody>
                 </table>
               </div>
