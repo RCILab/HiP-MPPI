@@ -1024,18 +1024,18 @@
                 <table class="parameter-table">
                   <thead><tr><th>Parameter</th><th>Racetrack</th><th>Tabletop</th><th>Real robot</th></tr></thead>
                   <tbody>
-                    <tr><td>Prediction horizon, T</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Control period, Δt</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Sampling budget, K</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Number of clusters, M</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Refinement iterations, R</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Temperature, λ</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Initial covariance, Σ<sub>init</sub></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Resampling covariance, Σ<sub>res</sub></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Trust-region width, Δ</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Projection weight, W</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Linearization margins, {m<sub>i</sub>}</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
-                    <tr><td>Priority tolerances, {δ<sub>ℓ</sub>}</td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td><td><span class="param-placeholder">TODO</span></td></tr>
+                    <tr><td>Prediction horizon, T</td><td>15</td><td>10 steps (1.0 s)</td><td>10 steps (1.0 s)</td></tr>
+                    <tr><td>Control period, Δt</td><td>0.1 s</td><td>0.1 s (10 Hz)</td><td>0.1 s (10 Hz)</td></tr>
+                    <tr><td>Sampling budget, K</td><td>100 / 30</td><td>100</td><td>100</td></tr>
+                    <tr><td>Number of clusters, M</td><td>3</td><td>2</td><td>2</td></tr>
+                    <tr><td>Refinement iterations, R</td><td>3</td><td>2</td><td>2</td></tr>
+                    <tr><td>Temperature, λ</td><td>5.0</td><td>0.2 (relative to cost range)</td><td>0.2 (relative to cost range)</td></tr>
+                    <tr><td>Initial covariance, Σ<sub>init</sub></td><td>diag(0.3<sup>2</sup>, 0.3<sup>2</sup>)</td><td>diag(1.2<sup>2</sup>) rad<sup>2</sup>/s<sup>2</sup>, all 7 axes</td><td>diag(1.2<sup>2</sup>) rad<sup>2</sup>/s<sup>2</sup>, all 7 axes</td></tr>
+                    <tr><td>Resampling covariance, Σ<sub>res</sub></td><td>Σ<sub>init</sub> (α = 1.0)</td><td>Σ<sub>init</sub>; shrink to 0.3× within 10 cm of target</td><td>Σ<sub>init</sub>; shrink to 0.3× within 10 cm of target</td></tr>
+                    <tr><td>Trust-region width, Δ</td><td>(0.7, 0.3) for (v, ω)</td><td>0.6, 0.36 rad/s</td><td>0.6, 0.36 rad/s</td></tr>
+                    <tr><td>Projection weight, W</td><td>diag(γ<sup>k/(T−1)</sup>), γ = 0.7</td><td>I</td><td>I</td></tr>
+                    <tr><td>Linearization margins, {m<sub>i</sub>}</td><td>0.03 / 0.03 / 0.02 m</td><td>obstacle 4.0 cm; hand height ±1 mm; tilt 1°; tangential velocity 0.10 m/s</td><td>obstacle 4.0 cm; hand height ±1 mm; tilt 1°; tangential velocity 0.10 m/s</td></tr>
+                    <tr><td>Priority tolerances, {δ<sub>ℓ</sub>}</td><td>10<sup>−5</sup>, 10<sup>−5</sup>, 10<sup>−5</sup>, 5×10<sup>−3</sup>, 10<sup>−3</sup></td><td>10<sup>−5</sup>, all levels</td><td>10<sup>−5</sup>, all levels</td></tr>
                   </tbody>
                 </table>
               </div>
